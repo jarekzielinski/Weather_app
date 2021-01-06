@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:weather/model/weather_forecast_model.dart';
+import 'package:weather/model/weather_forecast5_model.dart';
 import 'package:weather/network/network.dart';
+import 'package:weather/ui/bottom_view.dart';
 import 'package:weather/ui/mid_view.dart';
 
 class WeatherForecast extends StatefulWidget {
@@ -11,7 +12,7 @@ class WeatherForecast extends StatefulWidget {
 }
 
 class  WeatherForecastState extends State<WeatherForecast> {
-Future<WeatherForecastModel> forecastObject;
+Future<WeatherForecast5Model> forecastObject;
 String _cityName="Warszawa";
 @override
   void initState() {
@@ -33,11 +34,12 @@ String _cityName="Warszawa";
         children: [
           textFieldView(),
           Container(
-            child: FutureBuilder<WeatherForecastModel>(future:forecastObject,builder:(BuildContext context,AsyncSnapshot<WeatherForecastModel> snapshot){
+            child: FutureBuilder<WeatherForecast5Model>(future:forecastObject,builder:(BuildContext context,AsyncSnapshot<WeatherForecast5Model> snapshot){
 if(snapshot.hasData){
 return Column(
   children: [
-    midView(snapshot)
+    MidView(snapshot:snapshot),
+    BottomView(snapshot:snapshot)
   ],
 );
 }else{
@@ -57,25 +59,28 @@ return Column(
             }
           
             Widget textFieldView() {
-              return Container(
-                child: TextField(
-                  decoration: InputDecoration(
-                    hintText: "Enter city name",
-                    prefixIcon: Icon(Icons.search),
-                    border:OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(10)),
-                      contentPadding: EdgeInsets.all(8),
+              return Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Container(
+                  child: TextField(
+                    decoration: InputDecoration(
+                      hintText: "Enter city name",
+                      prefixIcon: Icon(Icons.search),
+                      border:OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(10)),
+                        contentPadding: EdgeInsets.all(8),
+                    ),
+                    onSubmitted: (value){
+                      setState(() {
+                        _cityName=value;
+                        forecastObject=getWeather(cityName: _cityName);
+                      });
+                    },
                   ),
-                  onSubmitted: (value){
-                    setState(() {
-                      _cityName=value;
-                      forecastObject=getWeather(cityName: _cityName);
-                    });
-                  },
                 ),
               );
 
             }
-            Future<WeatherForecastModel>getWeather({String cityName})=>
+            Future<WeatherForecast5Model>getWeather({String cityName})=>
             new Network().getWeatherForecast(cityName: _cityName);
 }

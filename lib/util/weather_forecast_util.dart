@@ -1,10 +1,12 @@
-import 'package:flutter/cupertino.dart';
 import 'package:intl/intl.dart';
 
 class Util{
 static String appId="420efbf15158b7594762130308261b16";
 static String getFormatedData(DateTime dateTime){
-return new DateFormat("EEE, MMM d, ''y"  ).format(dateTime);
+return new DateFormat("EEEE, MMM d, ''y"  ).format(dateTime);
+}
+static String getFormatedHour(DateTime dateTime){
+  return new DateFormat("h:mm a").format(dateTime);
 }
 static String changeTemp(double temp){
   double celTemp=(temp-273.15);
