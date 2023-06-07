@@ -1,7 +1,7 @@
 import 'package:intl/intl.dart';
 
 class Util{
-static String appId="420efbf15158b7594762130308261b16";
+static String appId="...";
 static String getFormatedData(DateTime dateTime){
 return new DateFormat("EEEE, MMM d, ''y"  ).format(dateTime);
 }
